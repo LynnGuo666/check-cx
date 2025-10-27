@@ -30,15 +30,22 @@ function normalizePathToProjectName(dirPath) {
  */
 function initializeClaudeProject(projectPath, log) {
   try {
+    log('info', 'checker', 'initializeClaudeProject entry', { projectPath });
     const normalizedName = normalizePathToProjectName(projectPath);
     const targetDir = path.join(PROJECTS_BASE, normalizedName);
+    log('info', 'checker', 'Normalized project info', { normalizedName, targetDir });
 
     if (!fs.existsSync(targetDir)) {
       fs.mkdirSync(targetDir, { recursive: true });
-      log('info', 'checker', `Created Claude project directory: ${targetDir}`);
+      log('info', 'checker', 'Claude project directory created', { targetDir });
+    } else {
+      log('info', 'checker', 'Claude project directory already exists', { targetDir });
     }
 
-    if (fs.existsSync(TEMPLATE_FILE)) {
+    const templateExists = fs.existsSync(TEMPLATE_FILE);
+    log('info', 'checker', 'Template file check', { templateFile: TEMPLATE_FILE, exists: templateExists });
+
+    if (templateExists) {
       const targetFile = path.join(targetDir, `${SESSION_ID}.jsonl`);
 
       // Read template content
@@ -46,6 +53,7 @@ function initializeClaudeProject(projectPath, log) {
 
       // Parse each line, replace cwd field, and reconstruct
       const lines = templateContent.split('\n').filter(line => line.trim());
+      log('info', 'checker', 'Template lines parsed', { lineCount: lines.length });
       const updatedLines = lines.map(line => {
         try {
           const obj = JSON.parse(line);
@@ -61,7 +69,7 @@ function initializeClaudeProject(projectPath, log) {
 
       // Write updated content
       fs.writeFileSync(targetFile, updatedLines.join('\n') + '\n', 'utf8');
-      log('info', 'checker', `Copied template to: ${targetFile} (cwd updated to ${projectPath})`);
+      log('info', 'checker', 'Template written to target', { targetFile, cwd: projectPath, lineCount: updatedLines.length });
     } else {
       log('warn', 'checker', `Template file not found: ${TEMPLATE_FILE}`);
     }
