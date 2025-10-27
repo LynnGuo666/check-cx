@@ -45,6 +45,5 @@
       "enabled": true
     }
   ],
-  "realtimeWindow": 15,
   "checkInterval": 300
 }
