@@ -162,6 +162,24 @@ config/
 
 4. **构建并运行**
 
+**方式一：使用预构建镜像（推荐）**
+
+项目已配置自动构建，可以直接从 GitHub Container Registry 拉取镜像：
+
+```bash
+# 拉取最新镜像
+docker pull ghcr.io/lynnguo666/check-cx:latest
+
+# 后台运行
+docker run -d --rm --name check-cx \
+  -p 30001:30001 \
+  -v $(pwd)/config:/app/config \
+  -e PROJECT_ROOT=/app \
+  ghcr.io/lynnguo666/check-cx:latest
+```
+
+**方式二：本地构建镜像**
+
 ```bash
 # 构建镜像
 docker build -t check-cx:latest .
