@@ -167,7 +167,7 @@ config/
 项目已配置自动构建，可以直接从 GitHub Container Registry 拉取镜像：
 
 ```bash
-# 拉取最新镜像
+# 拉取最新镜像（镜像名称会自动转为小写）
 docker pull ghcr.io/lynnguo666/check-cx:latest
 
 # 后台运行
