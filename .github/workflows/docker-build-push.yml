@@ -10,6 +10,9 @@ permissions:
   contents: read
   packages: write
 
+env:
+  IMAGE_NAME: check-cx
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -37,5 +40,5 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/check-cx:${{ github.sha }}
-            ghcr.io/${{ github.repository_owner }}/check-cx:latest
+            ghcr.io/${{ toLower(github.repository_owner) }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            ghcr.io/${{ toLower(github.repository_owner) }}/${{ env.IMAGE_NAME }}:latest
